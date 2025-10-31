@@ -1,36 +1,93 @@
-// FLEXUI FREE TABLE: Sorting only
 document.addEventListener("DOMContentLoaded", () => {
-  const tables = document.querySelectorAll(".flexui-table");
+  // Light/Dark Mode Toggle
+  const toggleBtn = document.createElement("button");
+  toggleBtn.textContent = "Toggle Theme";
+  toggleBtn.className = "flexui-theme-toggle";
+  document.body.prepend(toggleBtn);
 
-  tables.forEach((table) => {
-    const headers = table.querySelectorAll("th");
-    headers.forEach((th, index) => {
+  toggleBtn.addEventListener("click", () => {
+    const theme =
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "light"
+        : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  });
+
+  // Initialize all tables
+  document.querySelectorAll("table.flexui").forEach((table) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flexui-wrapper";
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+
+    // Search
+    const search = document.createElement("input");
+    search.placeholder = "Search...";
+    search.className = "flexui-search";
+    wrapper.insertBefore(search, table);
+
+    search.addEventListener("input", () => {
+      const filter = search.value.toLowerCase();
+      Array.from(table.tBodies[0].rows).forEach((row) => {
+        row.style.display = Array.from(row.cells).some((cell) =>
+          cell.textContent.toLowerCase().includes(filter)
+        )
+          ? ""
+          : "none";
+      });
+      updatePagination();
+    });
+
+    // Sorting
+    Array.from(table.querySelectorAll("th")).forEach((th, index) => {
       th.addEventListener("click", () => {
-        const tbody = table.querySelector("tbody");
-        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const rows = Array.from(table.tBodies[0].rows);
         const type = th.dataset.sort || "string";
-        const currentOrder = th.classList.contains("sorted-asc")
-          ? "asc"
-          : "desc";
-
         rows.sort((a, b) => {
-          const aText = a.children[index].textContent.trim();
-          const bText = b.children[index].textContent.trim();
-          if (type === "number") {
-            return currentOrder === "asc" ? bText - aText : aText - bText;
-          } else {
-            return currentOrder === "asc"
-              ? bText.localeCompare(aText)
-              : aText.localeCompare(bText);
-          }
+          const aText = a.cells[index].textContent;
+          const bText = b.cells[index].textContent;
+          return type === "number" ? aText - bText : aText.localeCompare(bText);
         });
-
-        tbody.innerHTML = "";
-        rows.forEach((row) => tbody.appendChild(row));
-
-        headers.forEach((h) => h.classList.remove("sorted-asc", "sorted-desc"));
-        th.classList.add(currentOrder === "asc" ? "sorted-desc" : "sorted-asc");
+        rows.forEach((row) => table.tBodies[0].appendChild(row));
+        updatePagination();
       });
     });
+
+    // Pagination
+    const pagination = document.createElement("div");
+    pagination.className = "flexui-pagination";
+    wrapper.appendChild(pagination);
+
+    const rowsPerPage = 5;
+    let currentPage = 0;
+
+    function updatePagination() {
+      const allRows = Array.from(table.tBodies[0].rows).filter(
+        (r) => r.style.display !== "none"
+      );
+      const totalPages = Math.ceil(allRows.length / rowsPerPage);
+
+      pagination.innerHTML = "";
+      for (let i = 0; i < totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i + 1;
+        btn.disabled = i === currentPage;
+        btn.addEventListener("click", () => {
+          currentPage = i;
+          showPage(allRows, currentPage);
+        });
+        pagination.appendChild(btn);
+      }
+      showPage(allRows, currentPage);
+    }
+
+    function showPage(rows, page) {
+      rows.forEach((row, i) => {
+        row.style.display =
+          i >= page * rowsPerPage && i < (page + 1) * rowsPerPage ? "" : "none";
+      });
+    }
+
+    updatePagination();
   });
 });

@@ -2,70 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlexUI Data Table Demo</title>
+  <title>FlexUI Demo</title>
   <link rel="stylesheet" href="css/flexui.css">
 </head>
 <body>
-  <header>
-    <h1>FlexUI Data Table Demo</h1>
-  </header>
 
-  <section>
-    <h2>Free Version (Sorting only)</h2>
-    <div class="flexui-table-wrapper">
-      <table class="flexui-table">
-        <thead>
-          <tr>
-            <th data-sort="string">Name</th>
-            <th data-sort="number">Age</th>
-            <th data-sort="string">Position</th>
-            <th data-sort="string">Office</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Michael Oracion</td><td>28</td><td>Frontend Dev</td><td>Manila</td></tr>
-          <tr><td>Jane Doe</td><td>32</td><td>UI/UX Designer</td><td>Cebu</td></tr>
-          <tr><td>John Smith</td><td>40</td><td>Backend Dev</td><td>Davao</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<table class="flexui">
+  <thead>
+    <tr>
+      <th data-sort="string">Name</th>
+      <th data-sort="number">Age</th>
+      <th data-sort="string">Position</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Michael</td><td>28</td><td>Frontend Dev</td></tr>
+    <tr><td>Jane</td><td>32</td><td>UI/UX Designer</td></tr>
+    <tr><td>John</td><td>40</td><td>Backend Dev</td></tr>
+    <tr><td>Alice</td><td>26</td><td>Frontend Dev</td></tr>
+    <tr><td>Bob</td><td>30</td><td>QA Engineer</td></tr>
+    <tr><td>Charlie</td><td>35</td><td>Project Manager</td></tr>
+  </tbody>
+</table>
 
-  <section>
-    <h2>Pro Version (Search + Pagination + CSV)</h2>
-    <div class="flexui-table-wrapper">
-      <input type="text" class="flexui-table-search" placeholder="Search table...">
-      <button class="flexui-export-csv">Export CSV</button>
-      <div class="flexui-column-toggle">
-        <label><input type="checkbox" data-col="0" checked> Name</label>
-        <label><input type="checkbox" data-col="1" checked> Age</label>
-        <label><input type="checkbox" data-col="2" checked> Position</label>
-        <label><input type="checkbox" data-col="3" checked> Office</label>
-      </div>
-
-      <table class="flexui-table">
-        <thead>
-          <tr>
-            <th data-sort="string">Name</th>
-            <th data-sort="number">Age</th>
-            <th data-sort="string">Position</th>
-            <th data-sort="string">Office</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Michael Oracion</td><td>28</td><td>Frontend Dev</td><td>Manila</td></tr>
-          <tr><td>Jane Doe</td><td>32</td><td>UI/UX Designer</td><td>Cebu</td></tr>
-          <tr><td>John Smith</td><td>40</td><td>Backend Dev</td><td>Davao</td></tr>
-          <tr><td>Alice Tan</td><td>26</td><td>Frontend Dev</td><td>Manila</td></tr>
-        </tbody>
-      </table>
-
-      <div class="flexui-pagination"></div>
-    </div>
-  </section>
-
-  <script src="js/table.js" defer></script>
-  <script src="js/table-pro.js" defer></script>
+<script src="js/flexui.js" defer></script>
 </body>
 </html>
